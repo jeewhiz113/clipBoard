@@ -4,7 +4,8 @@ const LandingPage = ()=> {
     return (
       <div>
         <h1>
-          Landing Page Here
+          <button>Login</button>
+          <button>Register</button>
         </h1>
         
       </div>

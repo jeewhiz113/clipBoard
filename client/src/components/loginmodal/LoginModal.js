@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 //import {v4 as uuid} from 'uuid';
 import {
   Button,
@@ -12,27 +12,30 @@ import {
   NavLink,
   Alert
 } from 'reactstrap';
+/*
 import { connect } from 'react-redux';
 import { login } from '../../actions/authActions';
-import { clearErrors } from '../../actions/errorActions';
+import { clearErrors } from '../../actions/errorActions';*/
 //import PropTypes from 'prop-types';
 
-class LoginModal extends Component {
-  state = {
+const LoginModal = () => {
+ /*  state = {
     modal:false,
     email:'',
     password:'',
     msg:null
-  }
+  } */
+  const [modal, setModal] = useState(false);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   toggle = ()=>{
     //Clear errors:
-    this.props.clearErrors();
-    this.setState({
-      modal:!this.state.modal
-    });
+    //this.props.clearErrors();
+    setModal(!modal);
   }
 
   //Whats the difference between componentDidMount and componentDidUpdate?
+  /*
   componentDidUpdate(preProps){
     const {error, isAuthenticated} = this.props;
     if (error !== preProps.error){
@@ -47,7 +50,7 @@ class LoginModal extends Component {
         this.toggle();
       }
     }
-  }
+  }*/
 
   onChange = (e) =>{
     this.setState({
@@ -91,6 +94,7 @@ class LoginModal extends Component {
     )
   }
 }
+/*
 const mapStateToProps = (state) =>({
   isAuthenticated: state.auth.isAuthenticated,  //if the user is authenticated or not.
   error: state.error
@@ -105,3 +109,6 @@ const mapDispatchToProps = (dispatch) =>{
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
+*/
+
+export default LoginModal
