@@ -28,7 +28,7 @@ const LoginModal = () => {
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  toggle = ()=>{
+  const toggle = ()=>{
     //Clear errors:
     //this.props.clearErrors();
     setModal(!modal);
@@ -52,38 +52,38 @@ const LoginModal = () => {
     }
   }*/
 
-  onChange = (e) =>{
+  /* onChange = (e) =>{
     this.setState({
       [e.target.name] : e.target.value
     });
-  }
-  onSubmit = e =>{
+  } */
+  const onSubmit = e =>{
     e.preventDefault();
-    const {email, password} = this.state;
-
+    console.log(email, password);
+    /*
     const user = {
       email,
       password
     }
     //attempt to login:
-    this.props.login(user);
+    this.props.login(user); */
   }
 
-  render(){
-    console.log(this.props);  //We see that when we log this here, with the mapDispatchToProps passed in to the connect function, the addItem function is now mapped to the props of this component.
+
+    //console.log(this.props);  //We see that when we log this here, with the mapDispatchToProps passed in to the connect function, the addItem function is now mapped to the props of this component.
     return(
       <div>
-        <NavLink onClick={this.toggle} href="#">Login</NavLink>
-        <Modal isOpen = {this.state.modal} toggle = {this.toggle}>
-          <ModalHeader toggle = {this.toggle}>Login</ModalHeader>
+        <NavLink onClick={toggle} href="#">Login</NavLink>
+        <Modal isOpen = {modal} toggle = {toggle}>
+          <ModalHeader toggle = {toggle}>Login</ModalHeader>
             <ModalBody>
-              {this.state.msg ? <Alert color='danger'>{this.state.msg}</Alert> : null}
-              <Form onSubmit = {this.onSubmit}>
+              
+              <Form onSubmit = {onSubmit}>
                 <FormGroup>
                   <Label for='email'>Email</Label>
-                  <Input type = 'email' name="email" id = "email" placeholder = "Email" className="mb-3" onChange = {this.onChange}/>
+                  <Input type = 'email' name="email" id = "email" placeholder = "Email" className="mb-3" onChange = {e => setEmail(e.target.value)}/>
                   <Label for='password'>Password</Label>
-                  <Input type = 'password' name="password" id = "password" placeholder = "Password" className="mb-3" onChange = {this.onChange}/>
+                  <Input type = 'password' name="password" id = "password" placeholder = "Password" className="mb-3" onChange = {e => setPassword(e.target.value)}/>
                   <Button color='dark' style={{marginTop: '2rem'}} block> Login</Button>
                 </FormGroup>
               </Form>
@@ -92,7 +92,7 @@ const LoginModal = () => {
         </Modal>
       </div>
     )
-  }
+  
 }
 /*
 const mapStateToProps = (state) =>({

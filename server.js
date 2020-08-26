@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-//const userRegister = require('./routes/register/registerUser');
+const userRegister = require('./routes/register/RegisterUsers');
 //const userLogin = require('./routes/login/loginUser');
 
 
@@ -20,7 +20,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
-//app.use('/auth', userRegister);
+app.use('/auth', userRegister);
 //app.use('/auth', userLogin);
 
 app.listen(5000, ()=>{

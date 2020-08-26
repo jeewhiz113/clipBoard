@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
-
+import LoginModal from './loginmodal/LoginModal'
+import RegisterModal from './registermodal/RegisterModal'
 const LandingPage = ()=> { 
     return (
       <div>
         <h1>
-          <button>Login</button>
-          <button>Register</button>
+          <LoginModal />
+          <RegisterModal />
         </h1>
         
       </div>
