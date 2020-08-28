@@ -1,7 +1,11 @@
 import React, { Component } from 'react';
-import LoginModal from './loginmodal/LoginModal'
-import RegisterModal from './registermodal/RegisterModal'
-const LandingPage = ()=> { 
+import LoginModal from './loginmodal/LoginModal';
+import RegisterModal from './registermodal/RegisterModal';
+import { connect } from 'react-redux';
+
+const LandingPage = (props)=> { 
+  console.log(props.isAuthenticated);
+  console.log(props.token);
     return (
       <div>
         <h1>
@@ -13,5 +17,11 @@ const LandingPage = ()=> {
     ); 
 }
 
+const mapStateToProps = (state) =>{
+  return {
+    isAuthenticated : state.auth.isAuthenticated,
+    token: state.auth.token,
+  }
+}
 
-export default LandingPage;
+export default connect(mapStateToProps)(LandingPage);

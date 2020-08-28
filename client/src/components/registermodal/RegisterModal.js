@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 //import {v4 as uuid} from 'uuid';
 import {
   Button,
@@ -52,15 +53,17 @@ const RegisterModal = ()=> {
   } */
   const onSubmit = e =>{
     e.preventDefault();
-   /*  const {name, email, password} = this.state;
-    //Create a user object:
+    console.log(name, email, password);
+    
     const newUser = {
       name,
       email,
       password
     };
-    //attempt to register
-    this.props.register(newUser); */
+    axios.post('./api/auth/register', newUser)
+      .then(res =>{
+        console.log(res);
+      })
     
   }
 

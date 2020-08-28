@@ -10,12 +10,11 @@ const User = require('../../models/User');
 //@route Post api/users: 
 //@desc Register new user
 //@access Public  (note we are using router, so we have router.get and not app.get)
-router.post('/', (req, res)=>{
-  const { name, email, password } = req.body;  //pull out these properties from the body of the post request.
+router.post('/register', (req, res)=>{
+  const { name, email, password } = req.body;  
   if (!name || !email || !password){
     return res.status(400).json({msg: "Please enter all fields."});  //400 means its a bad request
   }
-
   User.findOne({email: email})  //find the email that matches
     .then(user =>{
       if (user){  //user is either null or a user exists
@@ -26,24 +25,22 @@ router.post('/', (req, res)=>{
         email: email,
         password: password
       });
-      //Create salt and hash
-      bcrypt.genSalt(10, (err, salt)=>{  //generate a salt
-        bcrypt.hash(newUser.password, salt, (err, hash)=>{ //callback that takes such salt and theuser password and hash such pw.
-          if (err) throw err;  //then callback that takes such hash pw and assign it to newUser password.
+      bcrypt.genSalt(10, (err, salt)=>{  
+        bcrypt.hash(newUser.password, salt, (err, hash)=>{ 
+          if (err) throw err;  
           newUser.password = hash;
           newUser.save()
             .then(user =>{ 
-              //what is this actually doing?
               jwt.sign( //we put information in here to code the web token.
                 {
                   id: user.id,
                   name:user.name
                 },
-                config.get('jwtSecret'),
+                "myjwtsecret",
                 {expiresIn: 3600}, (err, token)=>{
                   if (err) throw err;
                   res.json({
-                    token: token,  //send the token along with the user to the browser.
+                    token: token,  //send the token along with the user to the browser. Need to fix here, do not send the token!
                     user:{
                       id: user.id,
                       name: user.name,
@@ -56,7 +53,37 @@ router.post('/', (req, res)=>{
         })
       })
     })
-  
 })  //Note the end point is api/item here because of how we defined it.
 
+
+router.post('/login', async (req, res) => {
+  const { email, password } = req.body;
+
+  // Simple validation
+  if (!email || !password) {
+    return res.status(400).json({ msg: 'Please enter all fields' });
+  }
+
+  try {
+    const user = await User.findOne({ email });
+    if (!user) return res.status(400).json({msg: "User not found."});
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) return res.status(400).json({msg: "Invalid credentials."});
+
+    const token = jwt.sign({ id: user._id }, "myjwtsecret", { expiresIn: 3600 });
+    if (!token) return res.status(400).json({msg: "Could not generate token"});
+    //sign the token right here.
+    res.status(200).json({
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email
+      }
+    });
+  } catch (e) {
+    res.status(400).json({ msg: e.message });
+  }
+});
 module.exports = router;

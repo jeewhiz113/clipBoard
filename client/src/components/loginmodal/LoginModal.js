@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 //import {v4 as uuid} from 'uuid';
 import {
   Button,
@@ -19,18 +20,12 @@ import { clearErrors } from '../../actions/errorActions';*/
 //import PropTypes from 'prop-types';
 
 const LoginModal = () => {
- /*  state = {
-    modal:false,
-    email:'',
-    password:'',
-    msg:null
-  } */
+
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState('');
   const toggle = ()=>{
-    //Clear errors:
-    //this.props.clearErrors();
     setModal(!modal);
   }
 
@@ -51,22 +46,22 @@ const LoginModal = () => {
       }
     }
   }*/
-
-  /* onChange = (e) =>{
-    this.setState({
-      [e.target.name] : e.target.value
-    });
-  } */
   const onSubmit = e =>{
     e.preventDefault();
     console.log(email, password);
-    /*
-    const user = {
+    
+    const authUser = {
       email,
       password
-    }
-    //attempt to login:
-    this.props.login(user); */
+    };
+    axios.post('./api/auth/login', authUser)
+      .then(res =>{
+        //Ok so when this comes back to the front end, let's set the token to localStorage.
+        console.log(res);
+        localStorage.setItem('token', res.data.token);
+        //next step is to set up the redux.  Look into the brad traversy videos.
+      })
+    
   }
 
 
