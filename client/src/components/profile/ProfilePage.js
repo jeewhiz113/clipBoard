@@ -1,52 +1,10 @@
-import React, { useState } from 'react';
-import axios from 'axios';
-//import {v4 as uuid} from 'uuid';
-import {
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  NavLink,
-  Alert
-} from 'reactstrap';
-
-import { connect } from 'react-redux';
-import { login } from '../../actions/authActions';
-/*
-import { clearErrors } from '../../actions/errorActions';*/
-//import PropTypes from 'prop-types';
-
-const LoginModal = (props) => {
-
-  const [modal, setModal] = useState(false);
+const ProfilePage = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [msg, setMsg] = useState('');
   const toggle = ()=>{
     setModal(!modal);
   }
-
-  //Whats the difference between componentDidMount and componentDidUpdate?
-  /*
-  componentDidUpdate(preProps){
-    const {error, isAuthenticated} = this.props;
-    if (error !== preProps.error){
-      if (error.id === 'LOGIN_FAIL'){  //set the state of the RegisterModal
-        this.setState({msg: error.msg.msg});
-      }else {
-        this.setState({msg:null})
-      }
-    }
-    if (this.state.modal){ //if open
-      if (isAuthenticated){ //if authenticated, close modal
-        this.toggle();
-      }
-    }
-  }*/
   const onSubmit = e =>{
     e.preventDefault();
     console.log(email, password);
@@ -66,9 +24,6 @@ const LoginModal = (props) => {
     props.login(authUser);
     console.log('logged in token', localStorage.getItem('token'));  //This should work after, but login is async
   }
-
-
-    //console.log(this.props);  //We see that when we log this here, with the mapDispatchToProps passed in to the connect function, the addItem function is now mapped to the props of this component.
     return(
       <div>
         <NavLink onClick={toggle} href="#">Login</NavLink>
@@ -102,10 +57,12 @@ const mapStateToProps = (state) =>({
 const mapDispatchToProps = (dispatch) =>{
   return {  
     login : (user)=>{dispatch(login(user))},
-    //clearErrors: () =>{dispatch(clearErrors())}
   }
-  //mapDispatchToProps
 }
 
 export default connect(null, mapDispatchToProps)(LoginModal);
 
+/*
+What needs to happen here:  If a token exists, check to see if it's valid, if not, send the invalid response and dispatch the appropriate error to the redux store.  Otherwise, we 'loaduser' which means populating the state in redux store (Such as name of the user, the videos that the user has posted and etc).  
+
+*/

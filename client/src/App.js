@@ -1,6 +1,7 @@
 import React from 'react';
 import LandingPage from './components/LandingPage';
-import {createStore} from 'redux';
+import {createStore, applyMiddleware, compose} from 'redux';
+import thunk from'redux-thunk';
 import { Provider } from 'react-redux';
 import authReducer from './reducers/';
 
@@ -19,7 +20,7 @@ import authReducer from './reducers/';
 
 */
 
-const store = createStore(authReducer);
+const store = createStore(authReducer, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 function App() {
   return (
     <div className="App">

@@ -6,7 +6,21 @@ const initialState = {
 }
 
 const authReducer = (state = initialState, action) =>{
-  return state;
+  switch(action.type){
+    case 'LOGIN_SUCCESS':
+      console.log('action payload', action.payload.token);
+      localStorage.setItem('token', action.payload.token);
+      return{
+        ...state,
+        token: action.payload.token,
+        isAuthenticated: true,
+        isLoading: false,
+      }
+    default:
+      return{
+        ...state
+      }
+  }
 }
 
 export default authReducer;
