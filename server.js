@@ -1,6 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const auth = require('./routes/api/auth');
+const user = require('./routes/api/users');
 //const userLogin = require('./routes/login/loginUser');
 
 
@@ -20,7 +20,7 @@ mongoose
 
 const app = express();
 app.use(express.json());
-app.use('/api/auth', auth);
+app.use('/api/auth', user);
 //app.use('/auth', userLogin);
 
 app.listen(5000, ()=>{

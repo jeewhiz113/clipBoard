@@ -15,7 +15,7 @@ import {
 } from 'reactstrap';
 
 import { connect } from 'react-redux';
-import { login } from '../../actions/authActions';
+import { login } from '../../../actions/authActions';
 /*
 import { clearErrors } from '../../actions/errorActions';*/
 //import PropTypes from 'prop-types';
@@ -62,9 +62,9 @@ const LoginModal = (props) => {
         localStorage.setItem('token', res.data.token);
         //next step is to set up the redux.  Look into the brad traversy videos.
       }) */
-    console.log('initial token', localStorage.getItem('token'));
+    /* console.log('initial token', localStorage.getItem('token'));
     props.login(authUser);
-    console.log('logged in token', localStorage.getItem('token'));  //This should work after, but login is async
+    console.log('logged in token', localStorage.getItem('token'));  //This should work after, but login is async */
   }
 
 
@@ -99,13 +99,13 @@ const mapStateToProps = (state) =>({
   error: state.error
 }) */
 //Then we need to think about how to lift these up with combineReducer
-const mapDispatchToProps = (dispatch) =>{
+/* const mapDispatchToProps = (dispatch) =>{
   return {  
     login : (user)=>{dispatch(login(user))},
     //clearErrors: () =>{dispatch(clearErrors())}
   }
   //mapDispatchToProps
-}
+} */
 
-export default connect(null, mapDispatchToProps)(LoginModal);
+export default (LoginModal);
 

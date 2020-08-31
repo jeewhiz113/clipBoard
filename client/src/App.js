@@ -1,27 +1,19 @@
-import React from 'react';
+import React, {useEffect}from 'react';
 import LandingPage from './components/LandingPage';
 import {createStore, applyMiddleware, compose} from 'redux';
 import thunk from'redux-thunk';
 import { Provider } from 'react-redux';
-import authReducer from './reducers/';
+import reducers from './reducers';
+import { loadUser } from './actions/authActions';
 
-//So here is the idea:
-/*
-  1. Setup the redux store, the net ninja redux video #39.  Set up the redux store to check if the user is logged in or not.  
-  
-  (go to the backend and change the login function to sign the jwt and send it out to the front end.  Also change the valid time)
-  (then we need to work on dispatching an action, such as the Login action.  And once done, we set the token variable in our redux store to be the payload of such action!)
+//So now we work on the RegisterModal and its smaller details.  Its able to register a user, and update the redux store if an error occurs, we need to incorporate some of the smaller details on the front end.
 
-  2.  If localStorage is not present, then launch the landing page.  (For this part here, let's refer to Brad's video and check to see how loadUser is done).
+const store = createStore(reducers, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
-  if it is, then launch the profile.js page. (Just make this.)
-  
-  3. Set up redux for the login system.  (Refer to Brad Traversy videos)
-
-*/
-
-const store = createStore(authReducer, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 function App() {
+  useEffect(()=>{
+    store.dispatch(loadUser());
+  })
   return (
     <div className="App">
       <Provider store = {store}>
@@ -29,6 +21,11 @@ function App() {
       </Provider>
     </div>
   );
+}
+const mapStateToProps = (state) =>{
+  return {
+    ...state
+  }
 }
 
 export default App;

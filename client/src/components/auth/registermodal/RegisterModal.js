@@ -13,12 +13,14 @@ import {
   NavLink,
   Alert
 } from 'reactstrap';
-/* import { connect } from 'react-redux';
-import { register } from '../../actions/authActions';
+import { connect } from 'react-redux';
+
+import { register } from '../../../actions/authActions';
+/*
 import { clearErrors } from '../../actions/errorActions'; */
 //import PropTypes from 'prop-types';
 
-const RegisterModal = ()=> {
+const RegisterModal = (props)=> {
   const [modal, setModal] = useState(false);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -60,10 +62,7 @@ const RegisterModal = ()=> {
       email,
       password
     };
-    axios.post('./api/auth/register', newUser)
-      .then(res =>{
-        console.log(res);
-      })
+    props.register(newUser);
     
   }
 
@@ -93,10 +92,11 @@ const RegisterModal = ()=> {
     )
   
 }
-/* const mapStateToProps = (state) =>({
+const mapStateToProps = (state) =>({
   isAuthenticated: state.auth.isAuthenticated,  //if the user is authenticated or not.
   error: state.error
 }) 
+/*
 //Then we need to think about how to lift these up with combineReducer
 const mapDispatchToProps = (dispatch) =>{
   return {  
@@ -126,4 +126,4 @@ const mapDispatchToProps = (dispatch) =>{
   
 </Modal> */}
 
-export default RegisterModal;
+export default connect(mapStateToProps, { register })(RegisterModal);

@@ -3,6 +3,7 @@ const router = express.Router();
 const bcrypt = require('bcrypt');
 //const config = require('config');  //need the jwt secret
 const jwt = require('jsonwebtoken'); //need jwt
+const auth = require('../../middleware/auth');
 //bring in item model
 
 const User = require('../../models/User');
@@ -31,7 +32,7 @@ router.post('/register', (req, res)=>{
           newUser.password = hash;
           newUser.save()
             .then(user =>{ 
-              jwt.sign( //we put information in here to code the web token.
+              /* jwt.sign( //we put information in here to code the web token.
                 {
                   id: user.id,
                   name:user.name
@@ -48,7 +49,13 @@ router.post('/register', (req, res)=>{
                     }
                   })
                 }
-              )
+              ) */
+              res.json({user: {
+                  id: user.id,
+                  name: user.name,
+                  email: user.email
+                }
+              });  //send the user back to front end once it has been saved.
             });
         })
       })
@@ -86,4 +93,18 @@ router.post('/login', async (req, res) => {
     res.status(400).json({ msg: e.message });
   }
 });
+
+//This route gets the user data by using the token.  This is the way for us to constantly validate the user that is logged in on our front end.  This is different than the middleware for which we check to see if a token is valid to protect routes!
+
+//Get api/auth/user
+//Getting the current user
+//Access is private, auth makes it so that if there is no token or token is not valid, we do not get the user back.
+router.get('/user', auth, (req, res) =>{
+  User.findById(req.user.id) //req.user.id is from the auth middleware.
+    .select('-password')  //gets us the promise with the user.
+    .then(user =>{
+      res.json(user)
+    });
+})
+
 module.exports = router;
