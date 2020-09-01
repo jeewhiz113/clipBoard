@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import {v4 as uuid} from 'uuid';
 import {
@@ -25,11 +25,26 @@ const LoginModal = (props) => {
   const [modal, setModal] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [msg, setMsg] = useState('');
+  const [msg, setMsg] = useState(null);
   const toggle = ()=>{
     setModal(!modal);
   }
-
+  useEffect(()=>{
+    const {error} = props;
+    //check to see if it is register error
+    if (error.id === 'LOGIN_FAIL'){
+      setMsg(error.msg.msg);
+    }else {
+      setMsg(null);
+    }
+    //if user is populated, which means register is sucessful, then close the modal
+    if(modal){
+      if (props.isAuthenticated){
+        toggle();
+      }
+    }
+    
+  }, [props.error, props.isAuthenticated]);  //refreshes if user is updated too.
   //Whats the difference between componentDidMount and componentDidUpdate?
   /*
   componentDidUpdate(preProps){
@@ -49,22 +64,11 @@ const LoginModal = (props) => {
   }*/
   const onSubmit = e =>{
     e.preventDefault();
-    console.log(email, password);
-    
     const authUser = {
       email,
       password
     };
-    /* axios.post('./api/auth/login', authUser)
-      .then(res =>{
-        //Ok so when this comes back to the front end, let's set the token to localStorage.
-        console.log(res);
-        localStorage.setItem('token', res.data.token);
-        //next step is to set up the redux.  Look into the brad traversy videos.
-      }) */
-    /* console.log('initial token', localStorage.getItem('token'));
     props.login(authUser);
-    console.log('logged in token', localStorage.getItem('token'));  //This should work after, but login is async */
   }
 
 
@@ -75,7 +79,7 @@ const LoginModal = (props) => {
         <Modal isOpen = {modal} toggle = {toggle}>
           <ModalHeader toggle = {toggle}>Login</ModalHeader>
             <ModalBody>
-              
+              {msg? <Alert color='danger'>{msg}</Alert> : null}
               <Form onSubmit = {onSubmit}>
                 <FormGroup>
                   <Label for='email'>Email</Label>
@@ -92,12 +96,11 @@ const LoginModal = (props) => {
     )
   
 }
-//Now lift the action up to the state.
-/*
+
 const mapStateToProps = (state) =>({
   isAuthenticated: state.auth.isAuthenticated,  //if the user is authenticated or not.
   error: state.error
-}) */
+}) 
 //Then we need to think about how to lift these up with combineReducer
 /* const mapDispatchToProps = (dispatch) =>{
   return {  
@@ -107,5 +110,5 @@ const mapStateToProps = (state) =>({
   //mapDispatchToProps
 } */
 
-export default (LoginModal);
+export default connect(mapStateToProps, {login})(LoginModal);
 

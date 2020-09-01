@@ -64,7 +64,7 @@ export const register = (user) => dispatch =>{
 
 
 
-/* //Login user:
+ //Login user:
 export const login = (user) => dispatch => {
   axios.post('/api/auth/login', user) //make the post request with name and headers
     .then((res) =>{
@@ -74,6 +74,7 @@ export const login = (user) => dispatch => {
       payload: res.data
     })}) //recall server comes back with the user information, send it over to reducer.))
     .catch(err => {
+      dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
       dispatch({type: 'LOGIN_FAIL'});  //id is REGISTER_FAIL
     })
-} */
+} 
