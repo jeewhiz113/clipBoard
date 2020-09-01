@@ -6,13 +6,14 @@ import { Provider } from 'react-redux';
 import reducers from './reducers';
 import { loadUser } from './actions/authActions';
 
-//So now we work on the RegisterModal and its smaller details.  Its able to register a user, and update the redux store if an error occurs, we need to incorporate some of the smaller details on the front end.
+//We skip the logout part for now, we come back to it once we have the login part.
 
+//Next we work on the log in part.
 const store = createStore(reducers, compose(applyMiddleware(thunk), window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()));
 
 function App() {
   useEffect(()=>{
-    store.dispatch(loadUser());
+    store.dispatch(loadUser());  //what does this actually check?
   })
   return (
     <div className="App">

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 //import {v4 as uuid} from 'uuid';
 import {
@@ -16,8 +16,8 @@ import {
 import { connect } from 'react-redux';
 
 import { register } from '../../../actions/authActions';
-/*
-import { clearErrors } from '../../actions/errorActions'; */
+
+import { clearErrors } from '../../../actions/errorActions'; 
 //import PropTypes from 'prop-types';
 
 const RegisterModal = (props)=> {
@@ -25,34 +25,12 @@ const RegisterModal = (props)=> {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [msg, setMsg] = useState(null);
   const toggle = ()=>{
-    //Clear errors:
-    //this.props.clearErrors();
+    //clearErrors:
+    props.clearErrors();
     setModal(!modal);
   }
-
-  //Whats the difference between componentDidMount and componentDidUpdate?
- /*  componentDidUpdate(preProps){
-    const {error, isAuthenticated} = this.props;
-    if (error !== preProps.error){
-      if (error.id === 'REGISTER_FAIL'){  //set the state of the RegisterModal
-        this.setState({msg: error.msg.msg});
-      }else {
-        this.setState({msg:null})
-      }
-    }
-    if (this.state.modal){ //if open
-      if (isAuthenticated){ //if authenticated, close modal
-        this.toggle();
-      }
-    }
-  } */
-
-  /* onChange = (e) =>{
-    this.setState({
-      [e.target.name] : e.target.value
-    });
-  } */
   const onSubmit = e =>{
     e.preventDefault();
     console.log(name, email, password);
@@ -63,9 +41,23 @@ const RegisterModal = (props)=> {
       password
     };
     props.register(newUser);
-    
   }
-
+  useEffect(()=>{
+    const {error} = props;
+    //check to see if it is register error
+    if (error.id === 'REGISTER_FAIL'){
+      setMsg(error.msg.msg);
+    }else {
+      setMsg(null);
+    }
+    //if user is populated, which means register is sucessful, then close the modal
+    if(modal){
+      if (props.user){
+        toggle();
+      }
+    }
+    
+  }, [props.error, props.user]);  //refreshes if user is updated too.
 
     return(
       <div>
@@ -73,7 +65,7 @@ const RegisterModal = (props)=> {
 <Modal isOpen = {modal} toggle = {toggle}>
   <ModalHeader toggle = {toggle}>Register</ModalHeader>
     <ModalBody>
-      
+      {msg? <Alert color='danger'>{msg}</Alert> : null}
       <Form onSubmit = {onSubmit}>
         <FormGroup>
           <Label for='name'>Name</Label>
@@ -94,7 +86,8 @@ const RegisterModal = (props)=> {
 }
 const mapStateToProps = (state) =>({
   isAuthenticated: state.auth.isAuthenticated,  //if the user is authenticated or not.
-  error: state.error
+  error: state.error,
+  user: state.auth.user
 }) 
 /*
 //Then we need to think about how to lift these up with combineReducer
@@ -126,4 +119,4 @@ const mapDispatchToProps = (dispatch) =>{
   
 </Modal> */}
 
-export default connect(mapStateToProps, { register })(RegisterModal);
+export default connect(mapStateToProps, { register, clearErrors })(RegisterModal);
