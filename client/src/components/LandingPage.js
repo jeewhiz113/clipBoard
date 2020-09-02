@@ -5,8 +5,8 @@ import { connect } from 'react-redux';
 //import the Logout page here just to check things
 import ProfilePage from './profile/ProfilePage';
 const LandingPage = (props)=> { 
-  console.log(props.isAuthenticated);  //if authenticated, load profile page.
-  console.log(props.token);
+  //console.log(props.isAuthenticated);  //if authenticated, load profile page.
+  //console.log(props.token);
     return (
       <div>
         <h1>

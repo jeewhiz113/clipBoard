@@ -18,10 +18,17 @@ export const loadUser = () => (dispatch, getState) =>{ //Whatis getState?!?!?
   dispatch ({type: USER_LOADING}); //dispatch action to reducer, which sets user_loading to be true.
 
   axios.get('/api/auth/user', tokenConfig(getState)) //send to backend to get the user.
-    .then(res =>dispatch({
-      type: USER_LOADED,
-      payload: res.data  //object with the user object and the token
-    }))
+    .then(res =>
+      {
+        console.log(res.data);
+        dispatch({
+      
+          type: USER_LOADED,
+          payload: res.data  //object with the user object and the token
+          
+        })
+      }
+      )
     .catch(err =>{
       dispatch(returnErrors(err.response.data, err.response.status));
       dispatch({type:AUTH_ERROR});  //set the state to be authReducer's initial state.
@@ -32,12 +39,13 @@ export const loadUser = () => (dispatch, getState) =>{ //Whatis getState?!?!?
 //getState() returns the current state tree of the application.  It is the last value returned by the store's reducer.
 export const tokenConfig = getState =>{
   //Get token from localStorage
-  const token = getState().auth.token;
-
+  //const token = getState().auth.token;
+  const token = localStorage.getItem('token');
+  console.log('token in front end is ', token);
   //Headers
   const config = {
     headers: {
-      "Content-type": "application/json"
+      "Content-Type": "application/json"
     }
   }
   //If token, add to headers
@@ -68,7 +76,6 @@ export const register = (user) => dispatch =>{
 export const login = (user) => dispatch => {
   axios.post('/api/auth/login', user) //make the post request with name and headers
     .then((res) =>{
-      console.log(res.data);
       dispatch({
       type: 'LOGIN_SUCCESS',
       payload: res.data

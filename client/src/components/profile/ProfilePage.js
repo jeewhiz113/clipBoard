@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import Logout from '../auth/logout/Logout';
+import Logout from '../auth/logout/logout';
 import { connect } from 'react-redux';
 
 //NOw when we display this page, we are assuming the user is already logged out.  This is derived not from the token, but from the redux store (Should be from the user object).  
@@ -12,10 +12,11 @@ Step 3: Add a add a question button on this page, and that should bring up the q
 
 */
 const ProfilePage = (props) => {
-    console.log(props);
+    console.log(props.user);
     return(
       <div>
-        
+        Hello {props.user.name}
+        Hello {props.user.name}
         <Logout />
       </div>
     )
@@ -28,5 +29,4 @@ const mapStateToProps = (state) =>{
   }
 }
 
-
-export default ProfilePage;
+export default connect(mapStateToProps, null)(ProfilePage);
