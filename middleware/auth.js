@@ -8,11 +8,14 @@ function auth(req, res, next){
     return res.status(401).json({msg: 'No token, authorization denied.'}) //401 is the unauthorization error code.
 
   }
-  //OK!! FIX THE TRY AND CATCH CLAUSE HERE!!!
-  const decoded = jwt.verify(token, "myjwtsecret");
-  req.user = decoded;  //add a user property in the req object;
-  next();
-      
+  try{
+    const decoded = jwt.verify(token, "myjwtsecret");
+    req.user = decoded;  //add a user property in the req object;
+    next();
+  }catch (error){
+    res.status(400).json({msg: 'Token is not valid'});
+  }
+  
 }
 
 module.exports = auth;
