@@ -78,3 +78,10 @@ export const login = (user) => dispatch => {
       dispatch({type: 'LOGIN_FAIL'});  //id is REGISTER_FAIL
     })
 } 
+
+//Logout, note we do not need to do anythng on the server side.
+export const logout = () => dispatch => {
+  dispatch({
+    type: 'LOGOUT_SUCCESS',
+  })
+};
