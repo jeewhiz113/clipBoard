@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Logout from '../auth/logout/Logout';
 import { connect } from 'react-redux';
+import AddQuestion from '../auth/addquestion/AddQuestion';
 
 //NOw when we display this page, we are assuming the user is already logged out.  This is derived not from the token, but from the redux store (Should be from the user object).  
 /*
@@ -15,6 +16,7 @@ const ProfilePage = (props) => {
       <div>
         Hello {props.user.name}
         Hello {props.user.name}
+        <AddQuestion />
         <Logout />
       </div>
     )
