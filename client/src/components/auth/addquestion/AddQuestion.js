@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
 import axios from 'axios';
 import {
   Button,
@@ -13,10 +14,11 @@ import {
   Alert
 } from 'reactstrap';
 
-import { connect } from 'react-redux';
+/* import { connect } from 'react-redux'; */
 
 
 const AddQuestion = (props) => {
+<<<<<<< HEAD
   const [rawFile, setRawfile]=useState([]); //this is what we wish to send to the server
   const [modal, setModal] = useState(false);
   const [Files, setFiles] = useState([]);
@@ -48,6 +50,18 @@ const AddQuestion = (props) => {
     })
   } 
   //Ok, so if Files has been changed, log it!
+=======
+  const {register, handleSubmit} = useForm();
+  const [modal, setModal] = useState(false);
+  const [files, setFile] = useState([]);
+  //const [password, setPassword] = useState('');
+  //const [msg, setMsg] = useState(null);
+  const toggle = ()=>{
+    setModal(!modal);
+  }
+  
+  /*
+>>>>>>> c4422117ddfe13177e7da7289ccacfa9f774dd84
   useEffect(()=>{
     console.log(Files);
     console.log(rawFile);
@@ -87,11 +101,26 @@ const AddQuestion = (props) => {
         console.log(err.response.data);
       }
     }
+<<<<<<< HEAD
+=======
+    
+  }, [props.error, props.isAuthenticated]);  //refreshes if user is updated too.
+  //Whats the difference between componentDidMount and componentDidUpdate?*/
+  
+  const onSubmit = e =>{
+    e.preventDefault();
+    /* const authUser = {
+      email,
+      password
+    }; */
+    //props.login(authUser);
+>>>>>>> c4422117ddfe13177e7da7289ccacfa9f774dd84
   }
     return(
       <div>
         <NavLink onClick={toggle} href="#">Add Question</NavLink>
         <Modal isOpen = {modal} toggle = {toggle}>
+<<<<<<< HEAD
             <form onSubmit = {onSubmit}>
               <div><h2>Upload images</h2></div>
               <h3>Images</h3>
@@ -104,6 +133,16 @@ const AddQuestion = (props) => {
              <input type='submit' value ='Upload' className='btn btn-primary btn-block mt-4'/>
             </form>
             
+=======
+        < form >
+        <div>
+          <h2>Upload images</h2>
+        </div>
+        <h3>Images</h3>
+        <input type="file" multiple  />
+      </form>
+          
+>>>>>>> c4422117ddfe13177e7da7289ccacfa9f774dd84
         </Modal>
       </div>
     )
@@ -115,6 +154,21 @@ const mapStateToProps = (state) =>({
   error: state.error
 }) 
 
-
+/*
+onChange={this.fileSelectedHandler}
+<ModalHeader toggle = {toggle}>Add a Quetion</ModalHeader>
+            <ModalBody>
+              {msg? <Alert color='danger'>{msg}</Alert> : null}
+              <Form onSubmit = {onSubmit}>
+                <FormGroup>
+                  <Label for='email'>Email</Label>
+                  <Input type = 'email' name="email" id = "email" placeholder = "Email" className="mb-3" />
+                  <Label for='password'>Password</Label>
+                  <Input type = 'password' name="password" id = "password" placeholder = "Password" className="mb-3" />
+                  <Button color='dark' style={{marginTop: '2rem'}} block> Login</Button>
+                </FormGroup>
+              </Form>
+            </ModalBody>
+*/
 export default AddQuestion;
 
