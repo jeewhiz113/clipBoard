@@ -2,7 +2,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const user = require('./routes/api/users');
 //const userLogin = require('./routes/login/loginUser');
-
+const fileUpload = require('express-fileupload');
+const upload = require('./routes/upload/upload')
 
 const db = "mongodb+srv://jee:1Y4KlDB1aWteEyZl@cluster0.rw6lk.mongodb.net/mernpractice?retryWrites=true&w=majority";
 
@@ -19,7 +20,9 @@ mongoose
   });
 
 const app = express();
+app.use(fileUpload());
 app.use(express.json());
+app.use('/upload', upload);
 app.use('/api/auth', user);
 //app.use('/auth', userLogin);
 
